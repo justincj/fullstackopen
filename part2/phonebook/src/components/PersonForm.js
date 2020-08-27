@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PersonForm = ({ persons, onSubmit }) => {
+const PersonForm = ({ persons, onSubmit, handleUpdate }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -8,7 +8,17 @@ const PersonForm = ({ persons, onSubmit }) => {
     e.preventDefault();
     for (let person of persons) {
       if (person.name.toLowerCase() === newName.toLowerCase()) {
-        alert(`${newName} is already added to phonebook`);
+        if (
+          window.confirm(
+            `${person.name} is already added to phonebook, replace the old number with new one`
+          )
+        ) {
+          handleUpdate(person.id, { ...person, number: newNumber });
+          setNewName("");
+          setNewNumber("");
+          return;
+        }
+        onSubmit(person);
         setNewName("");
         setNewNumber("");
         return;

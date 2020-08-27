@@ -14,9 +14,21 @@ const App = () => {
     });
   }, []);
 
+  const handleUpdate = (id, personObject) => {
+    PersonServices.update(id, personObject).then((updatedPerson) => {
+      setPersons(
+        persons.map((person) => (person.id !== id ? person : personObject))
+      );
+    });
+  };
+
   const handleSearch = (event) => setSearch(event.target.value);
 
   const handleSubmission = (person) => {
+    for (let member of persons) {
+      if (member.name.toLowerCase() === person.name.toLowerCase()) {
+      }
+    }
     PersonServices.create(person).then((returnedPerson) => {
       setPersons([...persons, returnedPerson]);
     });
@@ -42,7 +54,11 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter search={search} handleSearch={handleSearch} />
       <h2>Add a new</h2>
-      <PersonForm persons={persons} onSubmit={handleSubmission} />
+      <PersonForm
+        persons={persons}
+        onSubmit={handleSubmission}
+        handleUpdate={handleUpdate}
+      />
       <h2>Numbers</h2>
       {personsToShow.map((person) => (
         <Persons
