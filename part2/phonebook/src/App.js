@@ -2,23 +2,25 @@ import React, { useState, useEffect } from "react";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import Persons from "./components/Persons";
-import axios from "axios";
-
-const baseURL = "http://localhost:3001/persons";
+import PersonServices from "./services/person";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get(baseURL).then((response) => {
-      setPersons(response.data);
+    PersonServices.getAll().then((initialPeople) => {
+      setPersons(initialPeople);
     });
   }, []);
 
   const handleSearch = (event) => setSearch(event.target.value);
 
-  const handleSubmission = (person) => setPersons([...persons, person]);
+  const handleSubmission = (person) => {
+    PersonServices.create(person).then((returnedPerson) => {
+      setPersons([...persons, returnedPerson]);
+    });
+  };
 
   const personsToShow = search
     ? persons.filter((person) =>
