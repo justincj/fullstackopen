@@ -22,6 +22,15 @@ const App = () => {
     });
   };
 
+  const handleDelete = (id) => {
+    const person = persons.filter((person) => person.id === id);
+    if (window.confirm(`delete ${person[0].name}?`)) {
+      PersonServices.remove(id).then((response) => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
+
   const personsToShow = search
     ? persons.filter((person) =>
         person.name.toLowerCase().startsWith(search.toLowerCase())
@@ -36,7 +45,11 @@ const App = () => {
       <PersonForm persons={persons} onSubmit={handleSubmission} />
       <h2>Numbers</h2>
       {personsToShow.map((person) => (
-        <Persons key={person.name} person={person} />
+        <Persons
+          key={person.name}
+          person={person}
+          handleDelete={() => handleDelete(person.id)}
+        />
       ))}
     </div>
   );
