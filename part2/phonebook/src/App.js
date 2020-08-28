@@ -3,10 +3,13 @@ import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import Persons from "./components/Persons";
 import PersonServices from "./services/person";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [search, setSearch] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     PersonServices.getAll().then((initialPeople) => {
@@ -15,11 +18,21 @@ const App = () => {
   }, []);
 
   const handleUpdate = (id, personObject) => {
-    PersonServices.update(id, personObject).then((updatedPerson) => {
-      setPersons(
-        persons.map((person) => (person.id !== id ? person : personObject))
-      );
-    });
+    PersonServices.update(id, personObject)
+      .then((updatedPerson) => {
+        setPersons(
+          persons.map((person) => (person.id !== id ? person : personObject))
+        );
+      })
+      .catch((error) => {
+        setErrorMessage(
+          `Information ${personObject.name} is already deleted from server`
+        );
+        setPersons(persons.filter((person) => person.id !== id));
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 3000);
+      });
   };
 
   const handleSearch = (event) => setSearch(event.target.value);
@@ -31,6 +44,10 @@ const App = () => {
     }
     PersonServices.create(person).then((returnedPerson) => {
       setPersons([...persons, returnedPerson]);
+      setSuccessMessage(`Added ${person.name}`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
     });
   };
 
@@ -52,6 +69,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {successMessage ? (
+        <Notification message={successMessage} type="success" />
+      ) : (
+        <Notification message={errorMessage} type="error" />
+      )}
+
       <Filter search={search} handleSearch={handleSearch} />
       <h2>Add a new</h2>
       <PersonForm
