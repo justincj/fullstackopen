@@ -49,6 +49,15 @@ test("like property defaults to zero", async () => {
   expect(response.body.likes).toEqual(0);
 });
 
+test("absence of title and url cause 400 bad requst", async () => {
+  const newBlog = {
+    author: "person1",
+  };
+  await api.post("/api/blogs").send(newBlog).expect(400);
+  const response = await api.get("/api/blogs");
+  expect(response.body.length).toEqual(helper.initialBlog.length);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
