@@ -27,6 +27,18 @@ test("all notes are returned", async () => {
   expect(response.body).toHaveLength(helper.initialBlog.length);
 });
 
+test("post request increase the number of blogs ", async () => {
+  const newblog = {
+    author: "person1",
+    likes: 2,
+    title: "name of blog",
+    url: "http://www.example.com/",
+  };
+  await api.post("/api/blogs").send(newblog);
+  const response = await api.get("/api/blogs");
+  expect(response.body.length).toEqual(helper.initialBlog.length + 1);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
