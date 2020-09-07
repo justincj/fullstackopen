@@ -39,6 +39,16 @@ test("post request increase the number of blogs ", async () => {
   expect(response.body.length).toEqual(helper.initialBlog.length + 1);
 });
 
+test("like property defaults to zero", async () => {
+  const newblog = {
+    author: "person1",
+    title: "name of blog",
+    url: "http://www.example.com/",
+  };
+  const response = await api.post("/api/blogs").send(newblog);
+  expect(response.body.likes).toEqual(0);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
