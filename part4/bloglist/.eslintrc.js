@@ -4,8 +4,9 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
+    jest: true,
   },
-  extends: ["eslint:recommended", "plugin:jest/recommended"],
+  extends: ["eslint:recommended"],
   parserOptions: {
     ecmaVersion: 12,
   },
@@ -19,5 +20,4 @@ module.exports = {
     "object-curly-spacing": ["error", "always"],
     "arrow-spacing": ["error", { before: true, after: true }],
   },
-  plugins: ["jest"],
 };

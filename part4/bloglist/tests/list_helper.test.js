@@ -71,7 +71,6 @@ describe("total likes", () => {
 
 describe("most popular", () => {
   const popular = blogs.find((blog) => blog.likes === 12);
-  console.log(popular, "is popular");
   test("most popular", () => {
     const result = listHelper.favouriteBlog(blogs);
 
