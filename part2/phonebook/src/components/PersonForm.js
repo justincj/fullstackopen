@@ -13,7 +13,7 @@ const PersonForm = ({ persons, onSubmit, handleUpdate }) => {
             `${person.name} is already added to phonebook, replace the old number with new one`
           )
         ) {
-          handleUpdate(person.id, { ...person, number: newNumber });
+          handleUpdate(person.id, { ...person, numberid: newNumber });
           setNewName("");
           setNewNumber("");
           return;
@@ -24,7 +24,7 @@ const PersonForm = ({ persons, onSubmit, handleUpdate }) => {
         return;
       }
     }
-    const newperson = { name: newName, number: newNumber };
+    const newperson = { name: newName, numberid: newNumber };
     await onSubmit(newperson);
     setNewName("");
     setNewNumber("");

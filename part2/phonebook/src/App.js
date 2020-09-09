@@ -38,17 +38,21 @@ const App = () => {
   const handleSearch = (event) => setSearch(event.target.value);
 
   const handleSubmission = (person) => {
-    for (let member of persons) {
-      if (member.name.toLowerCase() === person.name.toLowerCase()) {
-      }
-    }
-    PersonServices.create(person).then((returnedPerson) => {
-      setPersons([...persons, returnedPerson]);
-      setSuccessMessage(`Added ${person.name}`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 3000);
-    });
+    PersonServices.create(person)
+      .then((returnedPerson) => {
+        setPersons([...persons, returnedPerson]);
+        setSuccessMessage(`Added ${person.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 3000);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        setErrorMessage(error.response.data.error);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 3000);
+      });
   };
 
   const handleDelete = (id) => {
