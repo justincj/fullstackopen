@@ -3,25 +3,29 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "lint": "eslint .",
+    "test": "NODE_ENV=test jest --verbose --runInBand"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.10.4"
+    "lodash": "^4.17.20",
+    "mongoose": "^5.10.4",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.13",
     "eslint": "^7.8.1",
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "supertest": "^4.0.2"
   },
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "jest . --runInBand"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "jest": {
     "testEnvironment": "node"
   }

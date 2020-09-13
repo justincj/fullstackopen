@@ -1,5 +1,3 @@
-const listHelper = require("../utils/list_helper");
-
 const listWithOneBlog = [
   {
     _id: "5a422aa71b54a676234d17f8",
@@ -65,55 +63,6 @@ const bloglist = [
     __v: 0,
   },
 ];
-
-test("dummy returns one", () => {
-  const blogs = [];
-
-  const result = listHelper.dummy(blogs);
-  expect(result).toBe(1);
-});
-
-describe("total likes", () => {
-  test("when list has only one blog, equals the likes of that", () => {
-    const result = listHelper.totalLikes(listWithOneBlog);
-    expect(result).toBe(5);
-  });
-  test("when more than one Blog", () => {
-    const result = listHelper.totalLikes(bloglist);
-    expect(result).toBe(36);
-  });
-});
-
-describe("favourite blog", () => {
-  test("returns the blog with most likes", () => {
-    const result = listHelper.favouriteBlog(bloglist);
-    expect(result).toEqual({
-      _id: "5a422b3a1b54a676234d17f9",
-      title: "Canonical string reduction",
-      author: "Edsger W. Dijkstra",
-      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-      likes: 12,
-      __v: 0,
-    });
-  });
-});
-
-describe("mostBlogs", () => {
-  test("author with most blogs", () => {
-    const result = listHelper.mostBlogs(bloglist);
-    expect(result).toEqual({ author: "Robert C. Martin", blogs: 3 });
-  });
-});
-
-describe("mostliked", () => {
-  test("most liked author in a bloglist", () => {
-    const result = listHelper.mostLikes(bloglist);
-    expect(result).toEqual({
-      author: "Edsger W. Dijkstra",
-      likes: 17,
-    });
-  });
-});
 
 module.exports = {
   listWithOneBlog,
