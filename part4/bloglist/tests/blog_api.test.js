@@ -12,16 +12,25 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-test("blogs are returned as json", async () => {
-  await api
-    .get("/api/blogs")
-    .expect(200)
-    .expect("Content-Type", /application\/json/);
+describe("blogs are returned as json", () => {
+  test("json for get all blogs", async () => {
+    await api
+      .get("/api/blogs")
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+  });
 });
 
 test("correct number of blogs are returned", async () => {
   const response = await api.get("/api/blogs");
   expect(response.body).toHaveLength(helper.bloglist.length);
+});
+
+describe("id property is defined", () => {
+  test("identifier property of blog is named id", async () => {
+    const response = await api.get("/api/blogs");
+    expect(response.body[0].id).toBeDefined();
+  });
 });
 
 afterAll(() => {
