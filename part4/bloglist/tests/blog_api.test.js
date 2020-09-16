@@ -72,6 +72,22 @@ describe("title and url properties should be present", () => {
   });
 });
 
+describe("deleting single blog post", () => {
+  jest.setTimeout(10000);
+  test("deleting single blog post works", async () => {
+    const blogs = await helper.blogsindb();
+    console.log(blogs);
+    const blog = blogs[0];
+    console.log(blog.id);
+    const url = `/api/blogs/${blog.id}`;
+    await api.del(url).expect(204);
+    console.log("done2");
+
+    const response = await api.get("/api/blogs").expect(200);
+    expect(response.body).not.toContain(blog);
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

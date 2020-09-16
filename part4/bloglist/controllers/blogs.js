@@ -21,9 +21,13 @@ blogRouter.post("/", async (request, response) => {
       .json({ error: "title and url properties are required" });
   }
   const blog = new Blog(request.body);
-
   const returnedBlog = await blog.save();
   response.status(201).json(returnedBlog);
+});
+
+blogRouter.delete("/:id", async (request, response) => {
+  await Blog.findByIdAndDelete(request.params.id);
+  response.status(204).end();
 });
 
 module.exports = blogRouter;
