@@ -76,15 +76,35 @@ describe("deleting single blog post", () => {
   jest.setTimeout(10000);
   test("deleting single blog post works", async () => {
     const blogs = await helper.blogsindb();
-    console.log(blogs);
     const blog = blogs[0];
-    console.log(blog.id);
     const url = `/api/blogs/${blog.id}`;
     await api.del(url).expect(204);
-    console.log("done2");
 
     const response = await api.get("/api/blogs").expect(200);
     expect(response.body).not.toContain(blog);
+  });
+});
+
+describe("updation", () => {
+  test("can update likes", async () => {
+    const blog = {
+      author: "Kent C dodds",
+      likes: 0,
+      title: "Why I Love React",
+      url: "http://www.epicreact.com",
+    };
+    const blogObject = new Blog(blog);
+    const response = await api.post("/api/blogs").send(blogObject);
+    const initialblogs = await helper.blogsindb();
+
+    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+    const res = await api
+      .put(`/api/blogs/${response.body.id}`)
+      .send(updatedBlog);
+
+    expect(res.body.likes).toBe(blog.likes + 1);
+    const updatedblogs = await helper.blogsindb();
+    expect(initialblogs).toHaveLength(updatedblogs.length);
   });
 });
 
