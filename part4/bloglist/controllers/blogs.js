@@ -11,12 +11,19 @@ blogRouter.get("/:id", async (request, response) => {
   response.json(blog);
 });
 
-blogRouter.post("/", (request, response) => {
+blogRouter.post("/", async (request, response) => {
+  let body = request.body;
+  body.likes = body.likes || 0;
+
+  if (!(body.title && body.url)) {
+    return response
+      .status(400)
+      .json({ error: "title and url properties are required" });
+  }
   const blog = new Blog(request.body);
 
-  blog.save().then((result) => {
-    response.status(201).json(result);
-  });
+  const returnedBlog = await blog.save();
+  response.status(201).json(returnedBlog);
 });
 
 module.exports = blogRouter;

@@ -33,6 +33,45 @@ describe("id property is defined", () => {
   });
 });
 
+describe("post request", () => {
+  test("post request increases the number of blogs in database by one", async () => {
+    const blogObject = new Blog({
+      author: "Kent C dodds",
+      likes: 4,
+      title: "Why I love React",
+      url: "http://www.epicreact.com",
+    });
+    await api.post("/api/blogs").send(blogObject);
+    const response = await api.get("/api/blogs");
+    expect(response.body).toHaveLength(helper.bloglist.length + 1);
+  });
+});
+
+describe("likes property", () => {
+  test("likes property defaults to zero if not provided one", async () => {
+    const blog = {
+      author: "Kent C dodds",
+      title: "Why I Love React",
+      url: "http://www.epicreact.com",
+    };
+    const blogObject = new Blog(blog);
+    const response = await api.post("/api/blogs").send(blogObject);
+    expect(response.body).toHaveProperty("likes");
+  });
+});
+
+describe("title and url properties should be present", () => {
+  test("return 400 Bad Request for missing title and url properties", async () => {
+    const blog = {
+      likes: 2,
+      author: "Kent C dodds",
+    };
+    const blogObject = new Blog(blog);
+    const response = await api.post("/api/blogs").send(blogObject);
+    expect(response.status).toEqual(400);
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
