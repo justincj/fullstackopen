@@ -1,8 +1,12 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 blogRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user", {
+    username: 1,
+    name: 1,
+  });
   response.json(blogs);
 });
 
@@ -13,6 +17,9 @@ blogRouter.get("/:id", async (request, response) => {
 
 blogRouter.post("/", async (request, response) => {
   let body = request.body;
+  const userid = body.user;
+  const user = await User.findById(userid);
+  body.user = user._id;
   body.likes = body.likes || 0;
 
   if (!(body.title && body.url)) {
@@ -20,8 +27,10 @@ blogRouter.post("/", async (request, response) => {
       .status(400)
       .json({ error: "title and url properties are required" });
   }
-  const blog = new Blog(request.body);
+  const blog = new Blog(body);
   const returnedBlog = await blog.save();
+  user.blogs = user.blogs.concat(returnedBlog._id);
+  await user.save();
   response.status(201).json(returnedBlog);
 });
 

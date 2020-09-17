@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const userRouter = require("express").Router();
 
 userRouter.get("/", async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).populate("blogs");
   return res.status(200).send(users);
 });
 
