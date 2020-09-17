@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const config = require("./utils/config");
 const middleware = require("./utils/middleware");
 const blogRouter = require("./controllers/blogs");
+const userRouter = require("./controllers/users");
 const logger = require("./utils/logger");
 
 const app = express();
@@ -13,6 +14,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    useCreateIndex: true,
   })
   .then(() => {
     logger.info("connected to MONGODB");
@@ -23,9 +25,11 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
-
 app.use(middleware.requestLogger);
+
 app.use("/api/blogs", blogRouter);
+app.use("/api/users", userRouter);
+
 app.use(middleware.unknownEndPoint);
 app.use(middleware.errorHandler);
 
