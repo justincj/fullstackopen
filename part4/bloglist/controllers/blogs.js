@@ -18,6 +18,9 @@ blogRouter.get("/:id", async (request, response) => {
 });
 
 blogRouter.post("/", async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end();
+  }
   let body = request.body;
   body.likes = body.likes || 0;
 
@@ -38,7 +41,7 @@ blogRouter.post("/", async (request, response) => {
   const returnedBlog = await blog.save();
   user.blogs = user.blogs.concat(returnedBlog._id);
   await user.save();
-  response.status(201).json(returnedBlog);
+  return response.status(201).json(returnedBlog);
 });
 
 blogRouter.delete("/:id", async (request, response) => {
@@ -46,8 +49,6 @@ blogRouter.delete("/:id", async (request, response) => {
   const decodedToken = await jwt.verify(token, process.env.SECRET);
   const userid = decodedToken.id;
   const user = await User.findById(userid);
-  console.log("user is", user);
-  console.log(request.params.id);
   const blog = await Blog.findById(request.params.id);
   if (blog && blog.user.toString() === user._id.toString()) {
     await Blog.findByIdAndDelete(blog._id);
