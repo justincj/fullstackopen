@@ -4,9 +4,7 @@ import BloginService from "../services/blogs";
 export const Details = ({ visible, blog, refresh }) => {
   console.log(blog);
   const [likes, setLikes] = useState(blog.likes);
-
-  const user = JSON.parse(window.localStorage.getItem("loggedUser"));
-  const username = user.username;
+  const [username, setUsername] = useState("");
 
   const buttonStyle = {
     backgroundColor: "blue",
@@ -24,6 +22,8 @@ export const Details = ({ visible, blog, refresh }) => {
     setLikes(likes + 1);
   };
   if (visible) {
+    const user = JSON.parse(window.localStorage.getItem("loggedUser"));
+    setUsername(user.username);
     return (
       <div>
         <p>{blog.url}</p>
@@ -43,5 +43,3 @@ export const Details = ({ visible, blog, refresh }) => {
     );
   } else return <></>;
 };
-
-export default Details;

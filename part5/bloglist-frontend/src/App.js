@@ -5,11 +5,10 @@ import loginService from "./services/login";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
+import LoginForm from "./components/LoginForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -38,12 +37,7 @@ const App = () => {
     window.localStorage.removeItem("loggedUser");
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const userObject = {
-      username,
-      password,
-    };
+  const handleLogin = async (userObject) => {
     try {
       const returnedUser = await loginService.create(userObject);
       setUser(returnedUser);
@@ -56,11 +50,10 @@ const App = () => {
         setErrorMessage(null);
       }, 3000);
     }
-    setUsername("");
-    setPassword("");
   };
 
   const handlePost = async (blogObject) => {
+    // @ts-ignore
     blogRef.current.toggleVisibility();
     try {
       const newblog = await blogService.create(blogObject);
@@ -84,23 +77,7 @@ const App = () => {
           errorMessage={errorMessage}
         />
         <h2>Log in to application</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
+        <LoginForm onSubmit={handleLogin} />
       </div>
     );
   };
