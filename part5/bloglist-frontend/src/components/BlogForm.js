@@ -5,14 +5,17 @@ const BlogForm = ({ onSubmit }) => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const blogObject = {
       title,
       author,
       url,
     };
-    onSubmit(blogObject);
+    await onSubmit(blogObject);
+    setTitle("");
+    setAuthor("");
+    setUrl("");
   };
 
   return (
