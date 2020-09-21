@@ -1,9 +1,23 @@
 import React, { useState } from "react";
 import BloginService from "../services/blogs";
 
-export const Details = ({ visible, blog }) => {
+export const Details = ({ visible, blog, refresh }) => {
   console.log(blog);
   const [likes, setLikes] = useState(blog.likes);
+
+  const user = JSON.parse(window.localStorage.getItem("loggedUser"));
+  const username = user.username;
+
+  const buttonStyle = {
+    backgroundColor: "blue",
+    color: "white",
+  };
+  const handleDelete = () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      BloginService.remove(blog.id);
+    }
+    refresh(blog.id);
+  };
 
   const likeHandler = () => {
     BloginService.update({ ...blog, likes: likes + 1 });
@@ -18,6 +32,13 @@ export const Details = ({ visible, blog }) => {
           <button onClick={likeHandler}>like</button>
         </p>
         <p>{blog.user.name}</p>
+        {blog.user.username === username ? (
+          <button style={buttonStyle} onClick={handleDelete}>
+            Remove
+          </button>
+        ) : (
+          <div></div>
+        )}
       </div>
     );
   } else return <></>;
