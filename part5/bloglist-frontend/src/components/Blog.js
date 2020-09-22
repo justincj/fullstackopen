@@ -16,7 +16,7 @@ const Blog = ({ blog, refresh }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="singleBlog">
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>{visible ? "hide" : "view"}</button>
       <Details visible={visible} blog={blog} refresh={refresh} />
