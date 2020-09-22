@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import BloginService from "../services/blogs";
 
-export const Details = ({ visible, blog, refresh }) => {
-  console.log(blog);
+export const Details = ({ visible, blog, user, refresh }) => {
   const [likes, setLikes] = useState(blog.likes);
-  const [username, setUsername] = useState("");
 
   const buttonStyle = {
     backgroundColor: "blue",
@@ -22,8 +20,6 @@ export const Details = ({ visible, blog, refresh }) => {
     setLikes(likes + 1);
   };
   if (visible) {
-    const user = JSON.parse(window.localStorage.getItem("loggedUser"));
-    setUsername(user.username);
     return (
       <div>
         <p>{blog.url}</p>
@@ -32,7 +28,7 @@ export const Details = ({ visible, blog, refresh }) => {
           <button onClick={likeHandler}>like</button>
         </p>
         <p>{blog.user.name}</p>
-        {blog.user.username === username ? (
+        {blog.user.username === user.username ? (
           <button style={buttonStyle} onClick={handleDelete}>
             Remove
           </button>
