@@ -40,7 +40,7 @@ export const App = () => {
       .then((returnedNote) =>
         setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)))
       )
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage(`Note ${note.content} was already removed from server`);
         setTimeout(() => {
           setErrorMessage(null);
@@ -49,12 +49,14 @@ export const App = () => {
   };
 
   const addNote = async (noteObject) => {
+    //@ts-ignore
     noteFormRef.current.toggleVisibility();
     const returnedNote = await noteServices.create(noteObject);
     console.log(returnedNote);
     setNotes(notes.concat(returnedNote));
   };
   const noteForm = () => (
+    //@ts-ignore
     <Togglable buttonLabel="new Note" ref={noteFormRef}>
       <NoteForm createNote={addNote} />
     </Togglable>
@@ -80,6 +82,7 @@ export const App = () => {
 
   const loginForm = () => {
     return (
+      //@ts-ignore
       <Togglable buttonLabel="login">
         <LoginForm handleSubmit={handleLogin} />
       </Togglable>
