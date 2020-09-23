@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
 import loginServices from "./services/login";
+import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -23,11 +25,16 @@ const App = () => {
   const handleLogin = async (userObject) => {
     try {
       const response = await loginServices.create(userObject);
-      window.localStorage.setItem("loggedUser", JSON.stringify(response));
-      console.log(response);
-      setUser(response);
+      console.log("response", response);
+      if (response) {
+        window.localStorage.setItem("loggedUser", JSON.stringify(response));
+        setUser(response);
+      }
     } catch (error) {
-      console.log(error);
+      setErrorMessage("wrong username or password");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 3000);
     }
   };
 
@@ -36,19 +43,43 @@ const App = () => {
     setUser(null);
   };
 
+  const handleBlogPost = async (blogObject) => {
+    try {
+      const newBlog = await blogService.create(blogObject);
+      setBlogs(blogs.concat(newBlog));
+      setSuccessMessage("new blog added");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+    } catch (error) {
+      setErrorMessage("Failed to Add Blog");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    }
+  };
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
   if (!user) {
-    return <LoginForm onSubmit={handleLogin} />;
+    return (
+      <div>
+        <Notification err={errorMessage} success={successMessage} />
+        <LoginForm onSubmit={handleLogin} />
+      </div>
+    );
   }
 
   return (
     <div>
+      <Notification err={errorMessage} success={successMessage} />
       <h2>blogs</h2>
       {user.name} logged in
       <button onClick={logoutHandler}>logout</button>
+      <h2>Create new</h2>
+      <BlogForm onSubmit={handleBlogPost} />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
