@@ -12,9 +12,11 @@ const App = () => {
 
   useEffect(() => {
     //check whether a user is logged in
-    const userObject = window.localStorage.getItem("loggedUser");
-    if (userObject) {
-      setUser(JSON.parse(userObject));
+    const loggedUser = window.localStorage.getItem("loggedUser");
+    if (loggedUser) {
+      const user = JSON.parse(loggedUser);
+      setUser(user);
+      blogService.setToken(user.token);
     }
   }, []);
 
@@ -22,6 +24,7 @@ const App = () => {
     try {
       const response = await loginServices.create(userObject);
       window.localStorage.setItem("loggedUser", JSON.stringify(response));
+      console.log(response);
       setUser(response);
     } catch (error) {
       console.log(error);
