@@ -4,28 +4,33 @@ const LoginForm = ({ onSubmit }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (event) => {
+  const LoginHandler = (event) => {
     event.preventDefault();
-    onSubmit({
-      username,
-      password,
-    });
+    onSubmit({ username, password });
     setUsername("");
     setPassword("");
   };
-
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
-      </div>
-      <div>
-        password
-        <input value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <div>
+      <h2>Log in to application</h2>
+      <form onSubmit={LoginHandler}>
+        <div>
+          username
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          password
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </div>
   );
 };
 
