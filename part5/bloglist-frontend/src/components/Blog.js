@@ -33,10 +33,10 @@ const Blog = ({ blog, incLike, handleDelete }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div className="Blog" style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={toggleDetails}>{view ? "hide" : "view"}</button>
-      <div style={showWhenDetails}>
+      <div className="details" style={showWhenDetails}>
         <p> {blog.url} </p>
         <div>
           likes {likes}
