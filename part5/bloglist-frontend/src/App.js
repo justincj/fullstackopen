@@ -5,6 +5,7 @@ import loginServices from "./services/login";
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -47,7 +48,9 @@ const App = () => {
     try {
       const newBlog = await blogService.create(blogObject);
       setBlogs(blogs.concat(newBlog));
-      setSuccessMessage("new blog added");
+      setSuccessMessage(
+        `a new blog ${newBlog.title} by ${newBlog.author} added`
+      );
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
@@ -79,7 +82,9 @@ const App = () => {
       {user.name} logged in
       <button onClick={logoutHandler}>logout</button>
       <h2>Create new</h2>
-      <BlogForm onSubmit={handleBlogPost} />
+      <Togglable buttonLabel="create new">
+        <BlogForm onSubmit={handleBlogPost} />
+      </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
