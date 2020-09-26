@@ -49,6 +49,15 @@ const App = () => {
     return updatedBlog.likes;
   };
 
+  //deleting a blog post
+
+  const handleDelete = async (blogId) => {
+    try {
+      await blogService.remove(blogId);
+      setBlogs(blogs.filter((blog) => blog.id !== blogId));
+    } catch (error) {}
+  };
+
   const handleBlogPost = async (blogObject) => {
     try {
       const newBlog = await blogService.create(blogObject);
@@ -93,7 +102,12 @@ const App = () => {
         <BlogForm onSubmit={handleBlogPost} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} incLike={handleLike} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          incLike={handleLike}
+          handleDelete={handleDelete}
+        />
       ))}
     </div>
   );
