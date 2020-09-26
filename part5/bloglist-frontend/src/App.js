@@ -55,7 +55,9 @@ const App = () => {
     try {
       await blogService.remove(blogId);
       setBlogs(blogs.filter((blog) => blog.id !== blogId));
-    } catch (error) {}
+    } catch (error) {
+      return <></>;
+    }
   };
 
   const handleBlogPost = async (blogObject) => {
