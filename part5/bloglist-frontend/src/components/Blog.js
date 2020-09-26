@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, incLike }) => {
+  const [likes, setLikes] = useState(blog.likes);
   const [view, setView] = useState(false);
   const blogStyle = {
     paddingTop: 10,
@@ -15,7 +16,13 @@ const Blog = ({ blog }) => {
   const toggleDetails = () => {
     setView(!view);
   };
-  const incrementLike = () => {};
+  const incrementLike = async () => {
+    const blogObject = { ...blog, likes: likes + 1 };
+    const updatedLike = await incLike(blogObject);
+    if (updatedLike) {
+      setLikes(updatedLike);
+    }
+  };
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
@@ -23,7 +30,7 @@ const Blog = ({ blog }) => {
       <div style={showWhenDetails}>
         <p> {blog.url} </p>
         <div>
-          likes {blog.likes}
+          likes {likes}
           <button onClick={incrementLike}>like</button>
         </div>
         <p>{blog.author}</p>

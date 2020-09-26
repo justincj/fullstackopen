@@ -44,6 +44,11 @@ const App = () => {
     setUser(null);
   };
 
+  const handleLike = async (blogObject) => {
+    const updatedBlog = await blogService.update(blogObject);
+    return updatedBlog.likes;
+  };
+
   const handleBlogPost = async (blogObject) => {
     try {
       const newBlog = await blogService.create(blogObject);
@@ -63,7 +68,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
   }, []);
 
   if (!user) {
@@ -86,7 +93,7 @@ const App = () => {
         <BlogForm onSubmit={handleBlogPost} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} incLike={handleLike} />
       ))}
     </div>
   );
