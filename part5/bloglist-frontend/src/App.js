@@ -35,7 +35,7 @@ const App = () => {
       setErrorMessage("wrong username or password");
       setTimeout(() => {
         setErrorMessage(null);
-      }, 3000);
+      }, 5000);
     }
   };
 

@@ -16,13 +16,13 @@ const Notification = ({ err, success }) => {
 
   if (err) {
     return (
-      <div style={errorStyle}>
+      <div className="errorMessage" style={errorStyle}>
         <h2>{err}</h2>
       </div>
     );
   } else if (success) {
     return (
-      <div style={successStyle}>
+      <div id="success" style={successStyle}>
         <h2>{success} </h2>
       </div>
     );
