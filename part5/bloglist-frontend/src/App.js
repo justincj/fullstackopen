@@ -105,6 +105,7 @@ const App = () => {
       </Togglable>
       {blogs.map((blog) => (
         <Blog
+          user={user}
           key={blog.id}
           blog={blog}
           incLike={handleLike}

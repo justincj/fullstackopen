@@ -3,11 +3,19 @@ import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/react";
 import Blog from "./Blog";
 
+const user = {
+  username: "jon",
+  name: "jon Doe",
+};
 const blog = {
   author: "dummy author",
   title: "dummy title",
   url: "dummy url",
   likes: "dummy likes",
+  user: {
+    username: "jon",
+    name: "jon Doe",
+  },
 };
 
 const incLike = jest.fn();
@@ -15,7 +23,7 @@ const incLike = jest.fn();
 describe("<Blog />", () => {
   let component;
   beforeEach(() => {
-    component = render(<Blog blog={blog} incLike={incLike} />);
+    component = render(<Blog blog={blog} incLike={incLike} user={user} />);
   });
 
   test("renders content", () => {
@@ -23,7 +31,6 @@ describe("<Blog />", () => {
   });
 
   test("url and likes are hidden by default", () => {
-    const component = render(<Blog blog={blog} />);
     const div = component.container.querySelector(".details");
     expect(div).toHaveTextContent("dummy url");
     expect(div).toHaveTextContent("dummy likes");
@@ -36,6 +43,7 @@ describe("<Blog />", () => {
     const div = component.container.querySelector(".details");
     expect(div).not.toHaveStyle("display: none");
   });
+
   test("if like button clicked handler called twice", () => {
     const likeHandler = jest.fn();
     const button = component.getByText("like");

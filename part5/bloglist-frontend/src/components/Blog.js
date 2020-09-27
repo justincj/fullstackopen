@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const Blog = ({ blog, incLike, handleDelete }) => {
+const Blog = ({ blog, incLike, handleDelete, user }) => {
   const [likes, setLikes] = useState(blog.likes);
   const [view, setView] = useState(false);
   const blogStyle = {
@@ -43,7 +43,11 @@ const Blog = ({ blog, incLike, handleDelete }) => {
           <button onClick={incrementLike}>like</button>
         </div>
         <p>{blog.author}</p>
-        <button onClick={removeBlog}>remove</button>
+        {user && blog.user.username === user.username ? (
+          <button onClick={removeBlog}>remove</button>
+        ) : (
+          <div>null</div>
+        )}
       </div>
     </div>
   );

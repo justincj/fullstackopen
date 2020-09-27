@@ -14,10 +14,11 @@ const BlogForm = ({ onSubmit }) => {
   };
   return (
     <div>
-      <form onSubmit={handlePost}>
+      <form className="form" onSubmit={handlePost}>
         <div>
           title:
           <input
+            id="title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
@@ -25,13 +26,18 @@ const BlogForm = ({ onSubmit }) => {
         <div>
           author:
           <input
+            id="author"
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
           url:
-          <input value={url} onChange={({ target }) => setUrl(target.value)} />
+          <input
+            id="url"
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
+          />
         </div>
         <button type="submit">create</button>
       </form>
