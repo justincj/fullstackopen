@@ -35,7 +35,9 @@ const Blog = ({ blog, incLike, handleDelete, user }) => {
   return (
     <div className="Blog" style={blogStyle}>
       {blog.title} {blog.author}
-      <button onClick={toggleDetails}>{view ? "hide" : "view"}</button>
+      <button className="View" onClick={toggleDetails}>
+        {view ? "hide" : "view"}
+      </button>
       <div className="details" style={showWhenDetails}>
         <p> {blog.url} </p>
         <div>
@@ -43,7 +45,7 @@ const Blog = ({ blog, incLike, handleDelete, user }) => {
           <button onClick={incrementLike}>like</button>
         </div>
         <p>{blog.author}</p>
-        {user && blog.user.username === user.username ? (
+        {blog.user.username === user.username ? (
           <button onClick={removeBlog}>remove</button>
         ) : (
           <div>null</div>

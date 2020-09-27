@@ -8,7 +8,7 @@ const NoteForm = ({ createNote }) => {
     console.log(newNote);
     createNote({
       content: newNote,
-      important: Math.random() > 0.5,
+      important: false,
     });
     setNewNote("");
   };

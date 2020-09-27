@@ -25,31 +25,26 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add("login", ({ username, password }) => {
-  cy.request("POST", "http://localhost:3003/api/login", {
+  cy.request("POST", "http://localhost:3001/api/login", {
     username,
     password,
-  }).then(({ body }) => {
-    localStorage.setItem("loggedUser", JSON.stringify(body));
+  }).then((response) => {
+    localStorage.setItem("loggedNoteappUser", JSON.stringify(response.body));
     cy.visit("http://localhost:3000");
   });
 });
 
-Cypress.Commands.add("createBlog", ({ title, author, url, likes }) => {
-  const obj = {
-    title,
-    author,
-    url,
-    likes: likes || 0,
-  };
+Cypress.Commands.add("createNote", ({ content, important }) => {
   cy.request({
-    url: "http://localhost:3003/api/blogs",
+    url: "http://localhost:3001/api/notes",
     method: "POST",
-    body: obj,
+    body: { content, important },
     headers: {
       Authorization: `bearer ${
-        JSON.parse(localStorage.getItem("loggedUser")).token
+        JSON.parse(localStorage.getItem("loggedNoteappUser")).token
       }`,
     },
   });
+
   cy.visit("http://localhost:3000");
 });
