@@ -1,23 +1,34 @@
 import React from "react";
-import { createAnecdote } from "../reducers/anecdoteReducer";
 import { useDispatch } from "react-redux";
+import { createNote } from "../reducers/anecdoteReducer";
+import { notify } from "../reducers/messageReducer";
 
 const AnecdoteForm = () => {
+  const formStyle = {
+    marginBottom: "10px",
+  };
   const dispatch = useDispatch();
-  const addAnecdote = (e) => {
+  const newNote = (e) => {
     e.preventDefault();
-    const content = e.target.anecdote.value;
-    e.target.anecdote.value = "";
-    dispatch(createAnecdote(content));
+    const content = e.target.quote.value;
+    e.target.quote.value = "";
+    dispatch(createNote(content));
+    dispatch(notify(content));
+    setTimeout(() => {
+      dispatch(notify(""));
+    }, 5000);
   };
 
   return (
-    <form onSubmit={addAnecdote}>
-      <div>
-        <input name="anecdote" />
+    <div>
+      <h2>create new</h2>
+      <form style={formStyle} onSubmit={newNote}>
+        <div>
+          <input name="quote" />
+        </div>
         <button type="submit">create</button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

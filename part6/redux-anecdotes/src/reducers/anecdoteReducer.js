@@ -23,24 +23,27 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "VOTE": {
       const id = action.data.id;
-      return state.map((anecs) =>
-        anecs.id !== id ? anecs : { ...anecs, votes: anecs.votes + 1 }
-      );
+      const quoteObject = state.find((quote) => quote.id === id);
+      const changedQuote = { ...quoteObject, votes: quoteObject.votes + 1 };
+      return state.map((quote) => (quote.id !== id ? quote : changedQuote));
     }
-    case "CREATE":
+    case "NEW_NOTE":
       return [...state, action.data];
     default:
       return state;
   }
 };
 
-export const createAnecdote = (content) => {
+export const createNote = (content) => {
   return {
-    type: "CREATE",
-    data: asObject(content),
+    type: "NEW_NOTE",
+    data: {
+      id: getId(),
+      content,
+      votes: 0,
+    },
   };
 };
-
 export const vote = (id) => {
   return {
     type: "VOTE",
