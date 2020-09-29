@@ -27,9 +27,18 @@ const reducer = (state = initialState, action) => {
         anecs.id !== id ? anecs : { ...anecs, votes: anecs.votes + 1 }
       );
     }
+    case "CREATE":
+      return [...state, action.data];
     default:
       return state;
   }
+};
+
+export const createAnecdote = (content) => {
+  return {
+    type: "CREATE",
+    data: asObject(content),
+  };
 };
 
 export default reducer;
