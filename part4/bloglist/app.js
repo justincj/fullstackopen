@@ -9,7 +9,6 @@ const userRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
 
 const logger = require("./utils/logger");
-
 const app = express();
 
 mongoose

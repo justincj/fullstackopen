@@ -1,21 +1,23 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { vote } from "../reducers/anecdoteReducer";
 import { notify } from "../reducers/messageReducer";
 
-const AnecdoteList = () => {
-  const dispatch = useDispatch();
-  const anecdotes = useSelector(({ query, anecdotes }) => {
-    if (!query) {
-      return anecdotes;
-    } else {
-      return anecdotes.filter((anecs) => anecs.content.includes(query));
-    }
-  });
+const AnecdoteList = (props) => {
+  let anecdotes;
+  if (!props.query) {
+    anecdotes = props.anecdotes;
+  } else {
+    anecdotes = props.anecdotes.filter((anecs) =>
+      anecs.content.includes(props.query)
+    );
+  }
+
   const voteHandler = (anecdote) => {
-    dispatch(vote(anecdote.id, { ...anecdote, votes: anecdote.votes + 1 }));
-    dispatch(notify(`you voted '${anecdote.content}'`, 5000));
+    props.vote(anecdote.id, { ...anecdote, votes: anecdote.votes + 1 });
+    props.notify(`you voted '${anecdote.content}'`, 5000);
   };
+
   return (
     <div>
       {anecdotes
@@ -33,4 +35,17 @@ const AnecdoteList = () => {
   );
 };
 
-export default AnecdoteList;
+const mapsStateToProps = (state) => {
+  return {
+    anecdotes: state.anecdotes,
+    message: state.message,
+    query: state.query,
+  };
+};
+
+const mapDispatchToProps = {
+  vote,
+  notify,
+};
+
+export default connect(mapsStateToProps, mapDispatchToProps)(AnecdoteList);

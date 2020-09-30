@@ -1,14 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { search } from "../reducers/filterReducer";
 
-const Filter = () => {
-  const dispatch = useDispatch();
-
+const Filter = (props) => {
   const searchHandler = (e) => {
     console.log(e);
     const query = e.target.value;
-    return dispatch(search(query));
+    return props.search(query);
   };
 
   return (
@@ -18,4 +16,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default connect(null, { search })(Filter);

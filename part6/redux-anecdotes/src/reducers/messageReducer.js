@@ -9,15 +9,17 @@ const messageReducer = (state = "", action) => {
   }
 };
 
+var st;
 export const notify = (message, time) => {
   return async (dispatch) => {
+    clearTimeout(st);
     dispatch({
       type: "NOTIFY",
       data: {
         message,
       },
     });
-    setTimeout(() => {
+    st = setTimeout(() => {
       dispatch({
         type: "CLEAR",
       });
