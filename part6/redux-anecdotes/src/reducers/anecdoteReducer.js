@@ -16,8 +16,9 @@ const reducer = (state = [], action) => {
   }
 };
 
-export const createNote = (quote) => {
+export const createNote = (quoteObject) => {
   return async (dispatch) => {
+    const quote = await quoteServices.create(quoteObject);
     dispatch({
       type: "NEW_QUOTE",
       data: quote,

@@ -6,7 +6,6 @@ import { notify } from "../reducers/messageReducer";
 const AnecdoteList = () => {
   const dispatch = useDispatch();
   const anecdotes = useSelector(({ query, anecdotes }) => {
-    console.log(query, anecdotes);
     if (!query) {
       return anecdotes;
     } else {
@@ -15,10 +14,7 @@ const AnecdoteList = () => {
   });
   const voteHandler = (anecdote) => {
     dispatch(vote(anecdote.id, { ...anecdote, votes: anecdote.votes + 1 }));
-    dispatch(notify(`you votes '${anecdote.content}'`));
-    setTimeout(() => {
-      dispatch(notify(""));
-    }, 5000);
+    dispatch(notify(`you voted '${anecdote.content}'`, 5000));
   };
   return (
     <div>

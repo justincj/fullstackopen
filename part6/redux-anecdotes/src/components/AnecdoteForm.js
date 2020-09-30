@@ -14,10 +14,7 @@ const AnecdoteForm = () => {
     const content = e.target.quote.value;
     e.target.quote.value = "";
     dispatch(createNote({ content, votes: 0 }));
-    dispatch(notify(content));
-    setTimeout(() => {
-      dispatch(notify(""));
-    }, 5000);
+    dispatch(notify(`Added '${content}'`, 5000));
   };
 
   return (
