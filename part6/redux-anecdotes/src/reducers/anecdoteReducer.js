@@ -17,11 +17,14 @@ const reducer = (state = [], action) => {
 };
 
 export const createNote = (quote) => {
-  return {
-    type: "NEW_QUOTE",
-    data: quote,
+  return async (dispatch) => {
+    dispatch({
+      type: "NEW_QUOTE",
+      data: quote,
+    });
   };
 };
+
 export const vote = (id) => {
   return {
     type: "VOTE",
@@ -31,7 +34,7 @@ export const vote = (id) => {
   };
 };
 
-export const initializeQuotes = (quotes) => {
+export const initializeQuotes = () => {
   return async (dispatch) => {
     const quotes = await quoteServices.getAll();
     dispatch({
