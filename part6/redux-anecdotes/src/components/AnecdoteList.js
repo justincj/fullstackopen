@@ -6,6 +6,7 @@ import { notify } from "../reducers/messageReducer";
 const AnecdoteList = () => {
   const dispatch = useDispatch();
   const anecdotes = useSelector(({ query, anecdotes }) => {
+    console.log(query, anecdotes);
     if (!query) {
       return anecdotes;
     } else {
