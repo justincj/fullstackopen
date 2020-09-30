@@ -1,3 +1,4 @@
+import quoteServices from "../services/quotes";
 const reducer = (state = [], action) => {
   switch (action.type) {
     case "VOTE": {
@@ -31,9 +32,12 @@ export const vote = (id) => {
 };
 
 export const initializeQuotes = (quotes) => {
-  return {
-    type: "INIT_QUOTES",
-    data: quotes,
+  return async (dispatch) => {
+    const quotes = await quoteServices.getAll();
+    dispatch({
+      type: "INIT_QUOTES",
+      data: quotes,
+    });
   };
 };
 

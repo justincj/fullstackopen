@@ -5,12 +5,11 @@ import Notification from "./components/Notification";
 import Filter from "./components/Filter";
 import { useDispatch } from "react-redux";
 import { initializeQuotes } from "./reducers/anecdoteReducer";
-import quotService from "./services/quotes";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    quotService.getAll().then((quotes) => dispatch(initializeQuotes(quotes)));
+    dispatch(initializeQuotes());
   }, [dispatch]);
   return (
     <div>
