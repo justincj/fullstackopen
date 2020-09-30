@@ -25,12 +25,15 @@ export const createNote = (quote) => {
   };
 };
 
-export const vote = (id) => {
-  return {
-    type: "VOTE",
-    data: {
-      id,
-    },
+export const vote = (id, anecdote) => {
+  return async (dispatch) => {
+    await quoteServices.update(id, anecdote);
+    dispatch({
+      type: "VOTE",
+      data: {
+        id,
+      },
+    });
   };
 };
 

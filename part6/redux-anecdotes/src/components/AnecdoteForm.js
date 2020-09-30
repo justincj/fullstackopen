@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createNote } from "../reducers/anecdoteReducer";
 import { notify } from "../reducers/messageReducer";
-import quoteServices from "../services/quotes";
 
 const AnecdoteForm = () => {
   const formStyle = {
@@ -14,8 +13,7 @@ const AnecdoteForm = () => {
     e.preventDefault();
     const content = e.target.quote.value;
     e.target.quote.value = "";
-    const newQuote = await quoteServices.create({ content, votes: 0 });
-    dispatch(createNote(newQuote));
+    dispatch(createNote({ content, votes: 0 }));
     dispatch(notify(content));
     setTimeout(() => {
       dispatch(notify(""));
