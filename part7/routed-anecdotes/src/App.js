@@ -3,8 +3,8 @@ import {
   Route,
   Link,
   Switch,
-  useParams,
   useRouteMatch,
+  useHistory,
 } from "react-router-dom";
 
 const Menu = () => {
@@ -13,15 +13,21 @@ const Menu = () => {
   };
   return (
     <div>
-      <a href="/" style={padding}>
-        anecdotes
-      </a>
-      <a href="/create" style={padding}>
-        create new
-      </a>
-      <a href="/about" style={padding}>
-        about
-      </a>
+      <Link to="/">
+        <a href="/" style={padding}>
+          anecdotes
+        </a>
+      </Link>
+      <Link to="/create">
+        <a href="/create" style={padding}>
+          create new
+        </a>
+      </Link>
+      <Link to="/about">
+        <a href="/about" style={padding}>
+          about
+        </a>
+      </Link>
     </div>
   );
 };
@@ -89,7 +95,10 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
 
+  const History = useHistory();
+
   const handleSubmit = (e) => {
+    console.log("working");
     e.preventDefault();
     props.addNew({
       content,
@@ -97,6 +106,7 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+    History.push("/");
   };
 
   return (
@@ -127,7 +137,7 @@ const CreateNew = (props) => {
             onChange={(e) => setInfo(e.target.value)}
           />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   );
@@ -155,7 +165,12 @@ const App = () => {
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
+    console.log(anecdote);
     setAnecdotes(anecdotes.concat(anecdote));
+    setNotification(`a new anecdote ${anecdote.content} created!`);
+    setTimeout(() => {
+      setNotification("");
+    }, 10000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -179,6 +194,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification}
       <Switch>
         <Route path="/anecdotes/:id">
           <Note anecdote={anecdote} />
